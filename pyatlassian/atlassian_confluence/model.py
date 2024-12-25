@@ -17,6 +17,9 @@ from ..atlassian.api import (
 
 @dataclasses.dataclass
 class Confluence(Atlassian):
+    """
+    - https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#about
+    """
     @cached_property
     def _root_url(self) -> str:
         return f"{self.url}/wiki/api/v2"
