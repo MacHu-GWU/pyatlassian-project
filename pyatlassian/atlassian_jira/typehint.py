@@ -2,6 +2,25 @@
 
 import typing as T
 
+T_ISSUE_FIELDS = T.Literal[
+    "*all",
+    "*navigable",
+    "id",
+    "summary",
+    "description",
+]
+
+T_ISSUE_EXPAND = T.Literal[
+    "renderedFields",
+    "names",
+    "schema",
+    "transitions",
+    "operations",
+    "editmeta",
+    "changelog",
+    "versionedRepresentations",
+]
+
 T_PROJECT_ORDER_BY = T.Literal[
     "category",
     "-category",
