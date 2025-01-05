@@ -5,7 +5,7 @@ if __name__ == "__main__":
 
     run_cov_test(
         __file__,
-        "pyatlassian.atlassian_confluence",
+        "pyatlassian.atlassian_jira",
         is_folder=True,
         preview=False,
     )

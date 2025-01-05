@@ -5,6 +5,8 @@ from pyatlassian import api
 
 def test():
     _ = api
+    _ = api.confluence.Confluence
+    _ = api.jira.Jira
 
 
 if __name__ == "__main__":

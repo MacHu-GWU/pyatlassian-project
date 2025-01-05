@@ -4,7 +4,8 @@ from pyatlassian.atlassian_confluence.model import Confluence
 
 
 class TestConfluence:
-    pass
+    def test(self):
+        _ = Confluence
 
 
 if __name__ == "__main__":
