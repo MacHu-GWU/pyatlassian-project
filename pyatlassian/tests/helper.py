@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import json
+
+from rich import print as rprint
+from rich.syntax import Syntax
+
 from ..paths import dir_project_root, dir_htmlcov
 from ..vendor.pytest_cov_helper import (
     run_unit_test as _run_unit_test,
@@ -30,3 +35,12 @@ def run_cov_test(
         preview=preview,
         is_folder=is_folder,
     )
+
+
+def jprint(dct: dict):
+    """
+    Pretty print json data.
+    """
+    code = json.dumps(dct, ensure_ascii=False, indent=4)
+    syntax = Syntax(code, "json", theme="monokai", line_numbers=True)
+    rprint(syntax)

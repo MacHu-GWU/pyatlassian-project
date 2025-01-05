@@ -3,61 +3,100 @@
 import json
 import time
 from rich import print as rprint
-from pyatlassian.tests.api_keys import sh_conf as conf
+from rich.console import Console
+from rich.panel import Panel
+
+from pyatlassian.tests import jprint
+from pyatlassian.tests.api_keys import sh_conf, esc_conf
+
+console = Console()
 
 
-def _test_get_spaces():
-    res = conf.get_spaces()
-    # rprint(res)
+def debug_space_data(data: dict):
+    id = data["id"]
+    key = data["key"]
+    name = data["name"]
+    type = data["type"]
+    content = "\n".join(
+        [
+            f"{type = }",
+        ]
+    )
+    panel = Panel(content, title=f"space_name = {name}, {id = }, {key = }")
+    console.print(panel)
+
+
+def debug_page_data(data: dict):
+    id = data["id"]
+    title = data["title"]
+    parent_id = data["parentId"]
+    parent_type = data["parentType"]
+    content = "\n".join(
+        [
+            f"{parent_id = }",
+            f"{parent_type = }",
+        ]
+    )
+    panel = Panel(content, title=f"page_title = {title}, {id = }")
+    console.print(panel)
+
+
+# ------------------------------------------------------------------------------
+#
+# ------------------------------------------------------------------------------
+def test_get_spaces():
+    # res = sh_conf.get_spaces()
+    res = esc_conf.get_spaces()
+    jprint(res)
+    print("Total Spaces: ", len(res["results"]))
     for space_data in res.get("results", []):
-        space_id = space_data["id"]
-        space_key = space_data["key"]
-        space_name = space_data["name"]
-        space_type = space_data["type"]
-        print(f"{space_id = }, {space_key = }, {space_name = }, {space_type = }")
+        debug_space_data(space_data)
     time.sleep(1)
 
 
-def _test_get_pages_in_space():
-    space_id = 45744130  # space_id = '45744130', space_key = 'JWT1', space_name = 'Job Work Template', space_type = 'global'
-    res = conf.get_pages_in_space(
+def test_get_pages_in_space():
+    space_id = 45744130  # Job Work Template
+
+    # no pagination
+    # res = sh_conf.get_pages_in_space(
+    #     space_id=space_id,
+    #     limit=5,
+    # )
+    # jprint(res)
+    # print("Total Pages: ", len(res["results"]))
+    # for page_data in res["results"]:
+    #     debug_page_data(page_data)
+
+    # auto pagination
+    res = sh_conf.get_pages_in_space(
         space_id=space_id,
-        limit=10,
+        limit=5,
+        max_results=10,
+        paginate=True,
     )
-    # rprint(res)
+    jprint(res)
+    print("Total Pages: ", len(res["results"]))
     for page_data in res["results"]:
-        page_id = page_data["id"]
-        page_title = page_data["title"]
-        page_parent_id = page_data["parentId"]
-        page_parent_type = page_data["parentType"]
-        print(
-            f"{page_id = }, {page_title = }, {page_parent_id = }, {page_parent_type = }"
-        )
+        debug_page_data(page_data)
+
     time.sleep(1)
 
 
-def _test_get_page_by_id():
-    page_id = 45383706  # page_id = '45383706', page_title = 'Projects', page_parent_id = '45744459', page_parent_type = 'page'
-    res = conf.get_page_by_id(
-        page_id=page_id,
-        body_format="storage",
-        include_labels=True,
-        include_properties=True,
-        include_operations=True,
-        include_likes=True,
-        include_versions=True,
-        include_version=True,
-        include_favorited_by_current_user_status=True,
-    )
-    print(json.dumps(res, ensure_ascii=False))
-    time.sleep(1)
-
-
-def test():
-    print("")
-    _test_get_spaces()
-    _test_get_pages_in_space()
-    _test_get_page_by_id()
+# def test_get_page_by_id():
+#     page_id = 45383706  # page_id = '45383706', page_title = 'Projects', page_parent_id = '45744459', page_parent_type = 'page'
+#     res = sh_conf.get_page_by_id(
+#         page_id=page_id,
+#         body_format="storage",
+#         include_labels=True,
+#         include_properties=True,
+#         include_operations=True,
+#         include_likes=True,
+#         include_versions=True,
+#         include_version=True,
+#         include_favorited_by_current_user_status=True,
+#     )
+#     jprint(res)
+#     time.sleep(1)
 
 
 if __name__ == "__main__":

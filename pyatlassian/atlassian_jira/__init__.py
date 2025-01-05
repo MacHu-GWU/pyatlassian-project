@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 """
-Atlassian Confluence SDK
+Atlassian JIRA SDK
 
 Reference:
 
-- https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#about
+- https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#about
 """
 
-__short_description__ = "Atlassian Confluence SDK."
+__short_description__ = "Atlassian JIRA SDK."
 __license__ = "MIT"
 __author__ = "Sanhe Hu"
 __author_email__ = "husanhe@gmail.com"
