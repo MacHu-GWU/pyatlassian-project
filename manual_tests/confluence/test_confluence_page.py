@@ -7,11 +7,22 @@ from pyatlassian.tests.api_keys import sh_conf, esc_conf
 
 
 def test_get_pages_for_label():
-    # "name": "ai-esc-playbook",
-    # "id": "41943045"
-    label_id = 41943045
+    label_id = 41943045  # "ai-esc-playbook"
     res = esc_conf.get_pages_for_label(
         id=label_id,
+    )
+    jprint(res)
+    print("Total Pages: ", len(res["results"]))
+    for page_data in res["results"]:
+        debug_page_data(page_data)
+    time.sleep(1)
+
+
+def test_get_pages():
+    res = esc_conf.get_pages(
+        body_format="atlas_doc_format",
+        limit=250,
+        paginate=True,
     )
     jprint(res)
     print("Total Pages: ", len(res["results"]))

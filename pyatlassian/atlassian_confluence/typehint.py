@@ -12,6 +12,13 @@ T_BODY_FORMAT = T.Literal[
     "editor",
 ]
 
+T_PAGE_STATUS = T.Literal[
+    "current",
+    "archived",
+    "deleted",
+    "trashed",
+]
+
 T_PAGE_SORT_ORDER = T.Literal[
     "id",
     "-id",
