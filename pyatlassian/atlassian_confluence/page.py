@@ -11,7 +11,7 @@ from ..atlassian.api import (
     rm_na,
     T_RESPONSE,
 )
-from .typehint import T_BODY_FORMAT
+from .typehint import T_BODY_FORMAT, T_PAGE_SORT_ORDER
 
 if T.TYPE_CHECKING:  # pragma: no cover
     from .model import Confluence
@@ -20,24 +20,16 @@ if T.TYPE_CHECKING:  # pragma: no cover
 @dataclasses.dataclass
 class PageMixin:
     """
-    - https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-group-page
+    For detailed API document, see:
+    https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-group-page
     """
 
-    def get_pages_in_space(
+    def get_pages_for_label(
         self: "Confluence",
         id: int,
-        depth: str = NA,
-        sort: str = NA,
-        status: list[
-            T.Literal[
-                "current",
-                "archived",
-                "trashed",
-                "deleted",
-            ]
-        ] = NA,
-        title: str = NA,
+        space_id: T.List[int] = NA,
         body_format: T_BODY_FORMAT = NA,
+        sort: T_PAGE_SORT_ORDER = NA,
         cursor: str = NA,
         limit: int = NA,
         paginate: bool = False,
@@ -46,17 +38,18 @@ class PageMixin:
         _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
         """
-        - https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-spaces-id-pages-get
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-labels-id-pages-get
 
-        :param paginate: If True, will auto paginate until all pages are fetched.
+        :param paginate: If True, automatically handle pagination
+        :param max_results: Maximum number of total results to return
+            when ``paginate = True``
         """
-        base_url = f"{self._root_url}/spaces/{id}/pages"
+        base_url = f"{self._root_url}/labels/{id}/pages"
         params = {
-            "depth": depth,
-            "sort": sort,
-            "status": status,
-            "title": title,
+            "space-id": space_id,
             "body-format": body_format,
+            "sort": sort,
             "cursor": cursor,
             "limit": limit,
         }
@@ -65,6 +58,8 @@ class PageMixin:
             params=params,
             paginate=paginate,
             max_results=max_results,
+            _url=_url,
+            _results=_results,
         )
 
     def get_page_by_id(
@@ -92,7 +87,8 @@ class PageMixin:
         include_favorited_by_current_user_status: bool = NA,
     ):
         """
-        - https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-pages-id-get
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-pages-id-get
         """
         params = {
             "body-format": body_format,
@@ -113,4 +109,51 @@ class PageMixin:
             method="GET",
             url=f"{self._root_url}/pages/{id}",
             params=params,
+        )
+
+    def get_pages_in_space(
+        self: "Confluence",
+        id: int,
+        depth: str = NA,
+        sort: str = NA,
+        status: list[
+            T.Literal[
+                "current",
+                "archived",
+                "trashed",
+                "deleted",
+            ]
+        ] = NA,
+        title: str = NA,
+        body_format: T_BODY_FORMAT = NA,
+        cursor: str = NA,
+        limit: int = NA,
+        paginate: bool = False,
+        max_results: int = 9999,
+        _url: str = None,
+        _results: list[T_RESPONSE] = None,
+    ) -> T_RESPONSE:
+        """
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-spaces-id-pages-get
+
+        :param paginate: If True, automatically handle pagination
+        :param max_results: Maximum number of total results to return
+            when ``paginate = True``
+        """
+        base_url = f"{self._root_url}/spaces/{id}/pages"
+        params = {
+            "depth": depth,
+            "sort": sort,
+            "status": status,
+            "title": title,
+            "body-format": body_format,
+            "cursor": cursor,
+            "limit": limit,
+        }
+        return self._paginate(
+            base_url=base_url,
+            params=params,
+            paginate=paginate,
+            max_results=max_results,
         )

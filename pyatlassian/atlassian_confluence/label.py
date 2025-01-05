@@ -17,18 +17,19 @@ if T.TYPE_CHECKING:  # pragma: no cover
 
 
 @dataclasses.dataclass
-class ChildrenMixin:
+class LabelMixin:
     """
-    For detailed API document, see:
-    https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-children/#api-group-children
+    For detailed API documentation, see:
+    https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-label/#api-group-label
     """
 
-    def get_child_pages(
+    def get_labels(
         self: "Confluence",
-        id: int,
+        label_id: T.List[int] = NA,
+        prefix: T.List[str] = NA,
+        sort: str = NA,
         cursor: str = NA,
         limit: int = NA,
-        sort: str = NA,
         paginate: bool = False,
         max_results: int = 9999,
         _url: str = None,
@@ -36,21 +37,25 @@ class ChildrenMixin:
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
-        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-children/#api-pages-id-children-get
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-label/#api-labels-get
 
         :param paginate: If True, automatically handle pagination
         :param max_results: Maximum number of total results to return
             when ``paginate = True``
         """
-        base_url = f"{self._root_url}/pages/{id}/children"
+        base_url = f"{self._root_url}/labels"
         params = {
+            "label-id": label_id,
+            "prefix": prefix,
+            "sort": sort,
             "cursor": cursor,
             "limit": limit,
-            "sort": sort,
         }
         return self._paginate(
             base_url=base_url,
             params=params,
             paginate=paginate,
             max_results=max_results,
+            _url=_url,
+            _results=_results,
         )

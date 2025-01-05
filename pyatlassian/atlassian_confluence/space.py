@@ -20,12 +20,14 @@ if T.TYPE_CHECKING:  # pragma: no cover
 @dataclasses.dataclass
 class SpaceMixin:
     """
-    - https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api-group-space
+    For detailed API document, see:
+    https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api-group-space
     """
 
     def get_spaces(self: "Confluence") -> T_RESPONSE:
         """
-        - https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api-spaces-get
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api-spaces-get
         """
         return self.make_request(
             method="GET",

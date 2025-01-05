@@ -11,3 +11,14 @@ T_BODY_FORMAT = T.Literal[
     "styled_view",
     "editor",
 ]
+
+T_PAGE_SORT_ORDER = T.Literal[
+    "id",
+    "-id",
+    "title",
+    "-title",
+    "created-date",
+    "-created-date",
+    "modified-date",
+    "-modified-date",
+]

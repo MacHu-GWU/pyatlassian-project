@@ -14,6 +14,7 @@ from ..atlassian.api import (
 )
 
 from .children import ChildrenMixin
+from .label import LabelMixin
 from .page import PageMixin
 from .space import SpaceMixin
 
@@ -22,6 +23,7 @@ from .space import SpaceMixin
 class Confluence(
     Atlassian,
     ChildrenMixin,
+    LabelMixin,
     PageMixin,
     SpaceMixin,
 ):

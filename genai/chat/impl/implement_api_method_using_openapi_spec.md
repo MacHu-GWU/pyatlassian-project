@@ -1,10 +1,10 @@
 /impl
 
-Task: Implement {API_GROUP} API Group, {API_METHOD} API Method for pyatlassian
+Task: Implement "{API_GROUP_HERE}" API Group, "{API_METHOD_HERE}" API Method for pyatlassian
 
 OpenAPI Spec:
 ```
-{PASTE_OPENAPI_JSON_HERE}
+{OPENAPI_JSON_HERE}
 ```
 
 Please follow these requirements:

@@ -5,6 +5,14 @@ from rich.panel import Panel
 from .helper import console
 
 
+def debug_label_data(data: dict):
+    id = data["id"]
+    name = data["name"]
+    prefix = data["prefix"]
+    panel = Panel(f"{id = }, {name = }, {prefix = }")
+    console.print(panel)
+
+
 def debug_page_data(data: dict):
     id = data["id"]
     title = data["title"]

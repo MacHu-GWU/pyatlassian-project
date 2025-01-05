@@ -43,7 +43,7 @@ def _test_search_for_issues_using_jql_enhanced_search():
         issue_description = issue_data["fields"]["description"]
         print(f"{issue_id = }, {issue_key = }, {issue_summary = }")
         print(json.dumps(issue_description, ensure_ascii=False, indent=4))
-    # time.sleep(1)
+    time.sleep(1)
 
 
 def test():
