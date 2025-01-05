@@ -53,6 +53,26 @@ Welcome to ``pyatlassian`` Documentation
 .. image:: https://pyatlassian.readthedocs.io/en/latest/_static/pyatlassian-logo.png
     :target: https://pyatlassian.readthedocs.io/en/latest/
 
+``pyatlassian`` provides a clean, intuitive, and fully-typed Python interface for interacting with Atlassian's cloud services like Confluence and Jira. While other Python clients exist for Atlassian's APIs, many are based on outdated APS specifications. PyAtlassian is built from the ground up to work seamlessly with the latest REST API versions.
+
+**Key Features**
+
+- Modern Python Support: Built for modern Python with full type hints
+- Cloud-First Design: Optimized for Atlassian cloud services
+- REST API Focused: Direct interface with the latest Atlassian REST APIs
+- Products Supported:
+    - Confluence Cloud
+    - JIRA Cloud
+    - More products coming soon...
+
+**Development Philosophy**
+
+While the initial vision for ``pyatlassian`` included automatic code generation from OpenAPI specifications, we chose a pragmatic approach focused on delivering immediate value. Here's why:
+
+- Focus on Immediate Needs: Rather than waiting for a complete OpenAPI-based solution, we're manually implementing the most critical API endpoints to provide a working solution sooner.
+- Quality Over Automation: Hand-crafted implementations allow us to provide a more Pythonic and intuitive interface, optimized for real-world usage patterns.
+- Parallel Development: While this project delivers immediate value through manual implementation, we maintain a separate project focused on OpenAPI-based generation for future scalability.
+
 
 .. _install:
 

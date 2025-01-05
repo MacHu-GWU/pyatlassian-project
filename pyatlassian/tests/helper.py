@@ -3,6 +3,7 @@
 import json
 
 from rich import print as rprint
+from rich.console import Console
 from rich.syntax import Syntax
 
 from ..paths import dir_project_root, dir_htmlcov
@@ -35,6 +36,9 @@ def run_cov_test(
         preview=preview,
         is_folder=is_folder,
     )
+
+
+console = Console()
 
 
 def jprint(dct: dict):

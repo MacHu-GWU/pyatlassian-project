@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 """
-Package Description.
+Modern, Pythonic interface for Atlassian's REST APIs, designed specifically for cloud-based Atlassian products.
 """
 
 from ._version import __version__
 
-__short_description__ = "Package short description."
+__short_description__ = "Modern, Pythonic interface for Atlassian's REST APIs, designed specifically for cloud-based Atlassian products."
 __license__ = "MIT"
 __author__ = "Sanhe Hu"
 __author_email__ = "husanhe@gmail.com"
