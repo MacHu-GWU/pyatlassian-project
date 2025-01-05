@@ -3,7 +3,9 @@
 Task: Implement {API_GROUP} {API_METHOD} endpoints for pyatlassian
 
 OpenAPI Spec:
+```
 {PASTE_OPENAPI_JSON_HERE}
+```
 
 Please follow these requirements:
 
