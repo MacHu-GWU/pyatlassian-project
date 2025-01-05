@@ -130,6 +130,11 @@ def get_open_api_spec():
     path = dir_out.joinpath("atlassian-confluence-openapi-spec.json")
     path.write_text(content)
 
+    url = "https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json"
+    content = json.dumps(requests.get(url).json(), ensure_ascii=False, indent=4)
+    path = dir_out.joinpath("atlassian-jira-openapi-spec.json")
+    path.write_text(content)
+
 
 def copy_unit_test_data_reference():
     path_in = dir_project_root.joinpath(

@@ -10,22 +10,22 @@ from pathlib import Path
 from pyatlassian.paths import dir_project_root
 
 api_group = """
-Label
+Projects
 """.strip()
 api_method = """
-Get labels
+Get projects paginated
 """.strip()
 api_path = """
-/labels
+/rest/api/3/project/search
 """.strip()
 
-p = dir_project_root.joinpath("genai", "tmp", "atlassian-confluence-openapi-spec.json")
+p = dir_project_root.joinpath("genai", "tmp", "atlassian-jira-openapi-spec.json")
 data = json.loads(p.read_text())
 spec = data["paths"][api_path]
 openapi_json = {api_path: spec}
 
 dir_here = Path(__file__).absolute().parent
-path_tpl = dir_here.joinpath("implement_api_method_using_openapi_spec.md")
+path_tpl = dir_here.joinpath("implement_jira_api_method_using_openapi_spec.md")
 path_out = dir_here.joinpath("prompt.md")
 
 md = path_tpl.read_text().format(

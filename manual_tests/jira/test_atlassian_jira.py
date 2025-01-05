@@ -19,12 +19,6 @@ def _test_get_projects():
     time.sleep(1)
 
 
-def _test_get_all_status_for_project():
-    res = jira.get_all_status_for_project(project_id_or_key="ESCPORTAL")
-    rprint(res)
-    time.sleep(1)
-
-
 def _test_search_for_issues_using_jql_enhanced_search():
     jql = textwrap.dedent(
         """

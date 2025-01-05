@@ -1,6 +1,6 @@
 /impl
 
-Task: Implement "{API_GROUP_HERE}" API Group, "{API_METHOD_HERE}" API Method for pyatlassian
+Task: Implement "{API_GROUP_HERE}" API Group, "{API_METHOD_HERE}" API Method for JIRA API in pyatlassian
 
 OpenAPI Spec:
 ```
