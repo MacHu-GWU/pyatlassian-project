@@ -1,6 +1,6 @@
 /impl
 
-Task: Implement {API_GROUP} {API_METHOD} endpoints for pyatlassian
+Task: Implement {API_GROUP} API Group, {API_METHOD} API Method for pyatlassian
 
 OpenAPI Spec:
 ```
