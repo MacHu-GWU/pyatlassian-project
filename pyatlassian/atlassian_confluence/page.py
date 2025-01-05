@@ -50,13 +50,7 @@ class PageMixin:
 
         :param paginate: If True, will auto paginate until all pages are fetched.
         """
-        if _url is None:
-            _url = f"{self._root_url}/spaces/{id}/pages"
-        if _results is None:
-            _results = []
-        if len(_results) >= max_results:
-            return {"results": _results}
-
+        base_url = f"{self._root_url}/spaces/{id}/pages"
         params = {
             "depth": depth,
             "sort": sort,
@@ -66,38 +60,12 @@ class PageMixin:
             "cursor": cursor,
             "limit": limit,
         }
-        params = rm_na(**params)
-        params = params if len(params) else None
-        res = self.make_request(
-            method="GET",
-            url=_url,
+        return self._paginate(
+            base_url=base_url,
             params=params,
+            paginate=paginate,
+            max_results=max_results,
         )
-        _results.extend(res.get("results", []))
-        if "next" in res["_links"] and paginate:
-            _url = f"{self.url}{res['_links']['next']}"
-            _res = self.get_pages_in_space(
-                id=id,
-                depth=depth,
-                sort=sort,
-                status=status,
-                title=title,
-                body_format=body_format,
-                cursor=cursor,
-                limit=limit,
-                paginate=True,
-                max_results=max_results,
-                _url=_url,
-                _results=_results,
-            )
-        else:
-            _res = None
-
-        if _res is None:
-            res["results"] = _results
-        else:
-            res = {"results": _results}
-        return res
 
     def get_page_by_id(
         self: "Confluence",

@@ -8,14 +8,18 @@ from .helper import console
 def debug_page_data(data: dict):
     id = data["id"]
     title = data["title"]
-    parent_id = data["parentId"]
-    parent_type = data["parentType"]
-    content = "\n".join(
-        [
-            f"{parent_id = }",
-            f"{parent_type = }",
-        ]
-    )
+
+    more_attrs = []
+
+    if "parentId" in data:
+        parent_id = data["parentId"]
+        more_attrs.append(f"{parent_id = }")
+
+    if "parentType" in data:
+        parent_type = data["parentType"]
+        more_attrs.append(f"{parent_type = }")
+
+    content = "\n".join(more_attrs)
     panel = Panel(content, title=f"page_title = {title}, {id = }")
     console.print(panel)
 
