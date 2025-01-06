@@ -15,15 +15,22 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
-0.1.2 (2025-01-05)
+0.2.1 (2025-01-05)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
-**Minor Improvements**
-
-**Bugfixes**
-
-**Miscellaneous**
+- Add support for Jira
+- Add a lot more Confluence api methods.
+- Add the following public API:
+    - ``Confluence.get_child_pages``
+    - ``Confluence.get_labels``
+    - ``Confluence.get_pages``
+    - ``Confluence.get_pages_for_label``
+    - ``Jira.get_all_status_for_project``
+    - ``Jira.get_all_users``
+    - ``Jira.get_issue``
+    - ``Jira.get_projects_paginated``
+    - ``Jira.search_for_issues_using_jql_enhanced_search``
 
 
 0.1.1 (2024-12-25)
@@ -32,7 +39,7 @@ x.y.z (Backlog)
 
 - First release
 - Add the following public API:
-    - ``pyatlassian.confluence.Confluence``
-    - ``pyatlassian.confluence.Confluence.get_spaces()``
-    - ``pyatlassian.confluence.Confluence.get_pages_in_space()``
-    - ``pyatlassian.confluence.Confluence.get_page_by_id()``
+    - ``Confluence``
+    - ``Confluence.get_page_by_id``
+    - ``Confluence.get_pages_in_space``
+    - ``Confluence.get_spaces``
