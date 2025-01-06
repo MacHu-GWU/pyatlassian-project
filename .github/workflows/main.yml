@@ -57,7 +57,7 @@ jobs:
       - name: "Upload coverage to Codecov"
         if: "contains(env.USING_COVERAGE, matrix.python-version)"
         uses: "codecov/codecov-action@v3" # https://github.com/marketplace/actions/codecov
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: MacHu-GWU/pyatlassian-project
-          fail_ci_if_error: true
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          slug: MacHu-GWU/pyatlassian-project
+#          fail_ci_if_error: true
