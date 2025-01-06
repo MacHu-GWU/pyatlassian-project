@@ -7,6 +7,7 @@ from ..atlassian.api import (
     Atlassian,
 )
 from .issue_search import IssueSearchMixin
+from .issues import IssuesMixin
 from .projects import ProjectsMixin
 
 
@@ -14,6 +15,7 @@ from .projects import ProjectsMixin
 class Jira(
     Atlassian,
     IssueSearchMixin,
+    IssuesMixin,
     ProjectsMixin,
 ):
     """
