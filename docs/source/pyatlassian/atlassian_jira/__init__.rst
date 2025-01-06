@@ -11,6 +11,11 @@ sub packages and modules
     :maxdepth: 1
 
     api <api>
+    issue_search <issue_search>
+    issues <issues>
     model <model>
+    projects <projects>
+    typehint <typehint>
+    users <users>
     utils <utils>
     

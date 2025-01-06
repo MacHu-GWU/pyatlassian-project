@@ -11,6 +11,8 @@ sub packages and modules
     :maxdepth: 1
 
     api <api>
+    children <children>
+    label <label>
     model <model>
     page <page>
     space <space>

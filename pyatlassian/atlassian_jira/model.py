@@ -9,6 +9,7 @@ from ..atlassian.api import (
 from .issue_search import IssueSearchMixin
 from .issues import IssuesMixin
 from .projects import ProjectsMixin
+from .users import UsersMixin
 
 
 @dataclasses.dataclass
@@ -17,6 +18,7 @@ class Jira(
     IssueSearchMixin,
     IssuesMixin,
     ProjectsMixin,
+    UsersMixin,
 ):
     """
     - https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#about
