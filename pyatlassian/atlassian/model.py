@@ -78,27 +78,36 @@ class Atlassian(BaseModel):
         self,
         method: str,  # GET, POST, PUT, DELETE
         url: str,
-        params: T.Optional[T.Dict[str, T.Any]] = None,
+        params: T.Optional[T_KWARGS] = None,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ) -> "requests.Response":
         """
         Make HTTP request and get response.
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
-        return requests.request(
+        kwargs = dict(
             method=method,
             url=url,
             headers=self.headers,
             params=params,
             auth=self.http_basic_auth,
         )
+        if req_kwargs is not None:
+            kwargs.update(req_kwargs)
+        return requests.request(**kwargs)
 
     def make_request(
         self,
         method: str,
         url: str,
         params: T.Optional[T.Dict[str, T.Any]] = None,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ) -> T_RESPONSE:
         """
         Wrap the response object with better error handling.
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         # print(f"{method = }") # for debug only
         # print(f"{url = }") # for debug only
@@ -107,6 +116,7 @@ class Atlassian(BaseModel):
             method=method,
             url=url,
             params=params,
+            req_kwargs=req_kwargs,
         )
         res.raise_for_status()
         return json.loads(res.text)

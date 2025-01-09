@@ -10,6 +10,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 from .typehint import T_ISSUE_FIELDS, T_ISSUE_EXPAND
 
@@ -35,10 +36,13 @@ class IssueSearchMixin:
         fields_by_keys: bool = NA,
         fail_fast: bool = NA,
         reconcile_issues: list[int] = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         params = {
             "jql": jql,
@@ -58,4 +62,5 @@ class IssueSearchMixin:
             method="GET",
             url=f"{self._root_url}/search/jql",
             params=params,
+            req_kwargs=req_kwargs,
         )

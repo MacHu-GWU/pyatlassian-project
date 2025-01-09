@@ -10,6 +10,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 from .typehint import T_BODY_FORMAT, T_PAGE_STATUS, T_PAGE_SORT_ORDER
 
@@ -34,6 +35,7 @@ class PageMixin:
         limit: int = NA,
         paginate: bool = False,
         max_results: int = 9999,
+        req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
         _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
@@ -44,6 +46,7 @@ class PageMixin:
         :param paginate: If True, automatically handle pagination
         :param max_results: Maximum number of total results to return
             when ``paginate = True``
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         base_url = f"{self._root_url}/labels/{id}/pages"
         params = {
@@ -58,6 +61,7 @@ class PageMixin:
             params=params,
             paginate=paginate,
             max_results=max_results,
+            req_kwargs=req_kwargs,
             _url=_url,
             _results=_results,
         )
@@ -74,6 +78,7 @@ class PageMixin:
         limit: int = NA,
         paginate: bool = False,
         max_results: int = 9999,
+        req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
         _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
@@ -84,6 +89,7 @@ class PageMixin:
         :param paginate: If True, automatically handle pagination
         :param max_results: Maximum number of total results to return
             when ``paginate = True``
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         base_url = f"{self._root_url}/pages"
         params = {
@@ -101,6 +107,7 @@ class PageMixin:
             params=params,
             paginate=paginate,
             max_results=max_results,
+            req_kwargs=req_kwargs,
             _url=_url,
             _results=_results,
         )
@@ -128,10 +135,13 @@ class PageMixin:
         include_versions: bool = NA,
         include_version: bool = NA,
         include_favorited_by_current_user_status: bool = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ):
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-pages-id-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         params = {
             "body-format": body_format,
@@ -152,6 +162,7 @@ class PageMixin:
             method="GET",
             url=f"{self._root_url}/pages/{id}",
             params=params,
+            req_kwargs=req_kwargs,
         )
 
     def get_pages_in_space(
@@ -173,6 +184,7 @@ class PageMixin:
         limit: int = NA,
         paginate: bool = False,
         max_results: int = 9999,
+        req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
         _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
@@ -183,6 +195,7 @@ class PageMixin:
         :param paginate: If True, automatically handle pagination
         :param max_results: Maximum number of total results to return
             when ``paginate = True``
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         base_url = f"{self._root_url}/spaces/{id}/pages"
         params = {
@@ -199,4 +212,5 @@ class PageMixin:
             params=params,
             paginate=paginate,
             max_results=max_results,
+            req_kwargs=req_kwargs,
         )

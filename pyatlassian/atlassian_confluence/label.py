@@ -10,6 +10,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 
 if T.TYPE_CHECKING:  # pragma: no cover
@@ -32,6 +33,7 @@ class LabelMixin:
         limit: int = NA,
         paginate: bool = False,
         max_results: int = 9999,
+        req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
         _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
@@ -42,6 +44,7 @@ class LabelMixin:
         :param paginate: If True, automatically handle pagination
         :param max_results: Maximum number of total results to return
             when ``paginate = True``
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         base_url = f"{self._root_url}/labels"
         params = {
@@ -56,6 +59,7 @@ class LabelMixin:
             params=params,
             paginate=paginate,
             max_results=max_results,
+            req_kwargs=req_kwargs,
             _url=_url,
             _results=_results,
         )

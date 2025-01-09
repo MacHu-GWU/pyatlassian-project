@@ -10,6 +10,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 from .typehint import T_ISSUE_FIELDS, T_ISSUE_EXPAND
 
@@ -33,40 +34,12 @@ class IssuesMixin:
         properties: list[str] = NA,
         update_history: bool = NA,
         fail_fast: bool = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ) -> T_RESPONSE:
         """
         https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get
 
-        The issue is identified by its ID or key, however, if the identifier doesn't match
-        an issue, a case-insensitive search and check for moved issues is performed.
-        If a matching issue is found its details are returned, a 302 or other redirect
-        is not returned. The issue key returned in the response is the key of the issue found.
-
-        Args:
-            issue_id_or_key: The ID or key of the issue
-            fields: List of fields to return. Defaults to all fields if not specified.
-                Use "*all" for all fields, "*navigable" for navigable fields,
-                or specific field names
-            fields_by_keys: Whether to reference fields by keys instead of IDs
-            expand: Additional information to include in response
-            properties: List of issue properties to return
-            update_history: Whether to add issue to user's "Recently viewed" list
-            fail_fast: Whether to fail quickly on field loading errors
-
-        Returns:
-            Complete issue details as JSON response
-
-        API Reference:
-            https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get
-
-        Example:
-            >>> jira = Jira(url="https://your-domain.atlassian.net", username="email@example.com", password="api-token")
-            >>> issue = jira.get_issue(
-            ...     issue_id_or_key="PROJ-123",
-            ...     fields=["summary", "description"],
-            ...     expand="renderedFields"
-            ... )
-            >>> print(issue["fields"]["summary"])
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         params = {
             "fields": fields,
@@ -83,4 +56,5 @@ class IssuesMixin:
             method="GET",
             url=f"{self._root_url}/issue/{issue_id_or_key}",
             params=params,
+            req_kwargs=req_kwargs,
         )

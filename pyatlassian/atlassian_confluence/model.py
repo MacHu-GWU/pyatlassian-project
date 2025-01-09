@@ -3,6 +3,7 @@
 """
 """
 
+import typing as T
 import dataclasses
 from functools import cached_property
 
@@ -11,6 +12,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 
 from .children import ChildrenMixin
@@ -41,6 +43,7 @@ class Confluence(
         params: dict,
         paginate: bool = False,
         max_results: int = 9999,
+        req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
         _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
@@ -52,9 +55,9 @@ class Confluence(
         :param params: Dictionary of query parameters
         :param paginate: If True, will auto paginate until all results are fetched
         :param max_results: Maximum number of results to return
+        :param req_kwargs: additional ``requests.request()`` kwargs
         :param _url: Internal parameter for continuation URLs
         :param _results: Internal parameter for result accumulation
-        :param kwargs: Additional parameters to pass through to recursive calls
         """
         if _url is None:
             _url = base_url
@@ -70,6 +73,7 @@ class Confluence(
             method="GET",
             url=_url,
             params=cleaned_params,
+            req_kwargs=req_kwargs,
         )
 
         # Accumulate results

@@ -11,6 +11,7 @@ def test():
     _ = api.rm_na
     _ = api.BaseModel
     _ = api.T_RESPONSE
+    _ = api.T_KWARGS
     _ = api.Atlassian
 
 

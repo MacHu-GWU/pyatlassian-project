@@ -10,6 +10,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 
 if T.TYPE_CHECKING:  # pragma: no cover
@@ -31,6 +32,7 @@ class ChildrenMixin:
         sort: str = NA,
         paginate: bool = False,
         max_results: int = 9999,
+        req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
         _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
@@ -41,6 +43,7 @@ class ChildrenMixin:
         :param paginate: If True, automatically handle pagination
         :param max_results: Maximum number of total results to return
             when ``paginate = True``
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         base_url = f"{self._root_url}/pages/{id}/children"
         params = {

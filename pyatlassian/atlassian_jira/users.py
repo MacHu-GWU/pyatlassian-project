@@ -10,6 +10,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 
 if T.TYPE_CHECKING:  # pragma: no cover
@@ -27,10 +28,13 @@ class UsersMixin:
         self: "Jira",
         start_at: int = NA,
         max_results: int = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-users/#api-rest-api-3-users-search-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         params = {
             "startAt": start_at,
@@ -41,5 +45,6 @@ class UsersMixin:
             method="GET",
             url=f"{self._root_url}/users/search",
             params=params,
+            req_kwargs=req_kwargs,
         )
         return res

@@ -10,6 +10,7 @@ from ..atlassian.api import (
     NA,
     rm_na,
     T_RESPONSE,
+    T_KWARGS,
 )
 from .typehint import (
     T_PROJECT_ORDER_BY,
@@ -43,10 +44,13 @@ class ProjectsMixin:
         status: T.List[T_PROJECT_STATUS] = NA,
         properties: T.List[str] = NA,
         property_query: str = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-search-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         base_url = f"{self._root_url}/project/search"
         params = {
@@ -69,16 +73,20 @@ class ProjectsMixin:
             method="GET",
             url=base_url,
             params=params,
+            req_kwargs=req_kwargs,
         )
         return res
 
     def get_all_status_for_project(
         self: "Jira",
         project_id_or_key: str,
+        req_kwargs: T.Optional[T_KWARGS] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-projectidorkey-statuses-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
         """
         params = {
             "projectIdOrKey": project_id_or_key,
@@ -89,4 +97,5 @@ class ProjectsMixin:
             method="GET",
             url=f"{self._root_url}/project/{project_id_or_key}/statuses",
             params=params,
+            req_kwargs=req_kwargs,
         )
