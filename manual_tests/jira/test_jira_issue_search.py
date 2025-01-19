@@ -7,20 +7,40 @@ from pyatlassian.tests.api_keys import esc_jira
 
 
 def test_search_for_issues_using_jql_enhanced_search():
+    # res = esc_jira.search_for_issues_using_jql_enhanced_search(
+    #     jql="""
+    #     project = PYATLASUT
+    #     ORDER BY createdDate DESC
+    #     """,
+    #     fields=[
+    #         # "*all",
+    #         "summary",
+    #         # "description",
+    #         # "created",
+    #         # "updated",
+    #     ],
+    # )
+    # jprint(res)
+    # print(f"n_issues = ", len(res["issues"]))
+    # time.sleep(1)
+
     res = esc_jira.search_for_issues_using_jql_enhanced_search(
         jql="""
-        project = PYATLASUT
-        ORDER BY createdDate DESC
-        """,
+            project = AWD
+            ORDER BY createdDate DESC
+            """,
         fields=[
             # "*all",
             "summary",
-            "description",
-            "created",
-            "updated",
+            # "description",
+            # "created",
+            # "updated",
         ],
+        paginate=True,
+        max_results=3,
     )
     jprint(res)
+    print(f"n_issues = ", len(res["issues"]))
     time.sleep(1)
 
 

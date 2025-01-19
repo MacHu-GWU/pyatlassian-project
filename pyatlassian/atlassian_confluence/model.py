@@ -50,7 +50,6 @@ class Confluence(
         """
         Universal pagination handler for Atlassian API endpoints.
 
-
         :param base_url: The base URL for the API endpoint
         :param params: Dictionary of query parameters
         :param paginate: If True, will auto paginate until all results are fetched
@@ -80,7 +79,7 @@ class Confluence(
         _results.extend(res.get("results", []))
 
         # Handle pagination
-        if "next" in res.get("_links", {}) and paginate:
+        if ("next" in res.get("_links", {})) and paginate:
             next_url = f"{self.url}{res['_links']['next']}"
             _res = self._paginate(
                 base_url=base_url,
