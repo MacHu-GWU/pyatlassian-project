@@ -6,6 +6,7 @@
 import typing as T
 import dataclasses
 
+from ..pagi import _paginate
 from ..atlassian.api import (
     NA,
     rm_na,
@@ -31,22 +32,19 @@ class LabelMixin:
         sort: str = NA,
         cursor: str = NA,
         limit: int = NA,
-        paginate: bool = False,
-        max_results: int = 9999,
         req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
-        _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-label/#api-labels-get
 
-        :param paginate: If True, automatically handle pagination
-        :param max_results: Maximum number of total results to return
-            when ``paginate = True``
         :param req_kwargs: additional ``requests.request()`` kwargs
         """
-        base_url = f"{self._root_url}/labels"
+        if _url is None:
+            url = f"{self._root_url}/labels"
+        else:
+            url = _url
         params = {
             "label-id": label_id,
             "prefix": prefix,
@@ -54,12 +52,51 @@ class LabelMixin:
             "cursor": cursor,
             "limit": limit,
         }
-        return self._paginate(
-            base_url=base_url,
+        params = rm_na(**params)
+        params = params if len(params) else None
+        return self.make_request(
+            method="GET",
+            url=url,
             params=params,
-            paginate=paginate,
-            max_results=max_results,
             req_kwargs=req_kwargs,
-            _url=_url,
-            _results=_results,
+        )
+
+    def pagi_get_labels(
+        self: "Confluence",
+        label_id: T.List[int] = NA,
+        prefix: T.List[str] = NA,
+        sort: str = NA,
+        cursor: str = NA,
+        limit: int = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
+        total_max_results: int = 9999,
+    ) -> T_RESPONSE:
+        """
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-label/#api-labels-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
+        :param total_max_results: total max results to fetch in all response
+        """
+
+        def get_next_token(res):
+            return res.get("_links", {}).get("next")
+
+        def set_next_token(kwargs, next_token):
+            kwargs["_url"] = f"{self.url}{next_token}"
+
+        yield from _paginate(
+            method=self.get_labels,
+            list_key="results",
+            get_next_token=get_next_token,
+            set_next_token=set_next_token,
+            kwargs=dict(
+                label_id=label_id,
+                prefix=prefix,
+                sort=sort,
+                cursor=cursor,
+                limit=limit,
+                req_kwargs=req_kwargs,
+            ),
+            max_results=total_max_results,
         )

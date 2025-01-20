@@ -16,6 +16,19 @@ def test_get_labels():
     time.sleep(1)
 
 
+def test_pagi_get_labels():
+    # for res in sh_conf.pagi_get_labels(
+    for res in esc_conf.pagi_get_labels(
+        limit=5,
+        total_max_results=9999,
+    ):
+        jprint(res)
+        print("Total Labels: ", len(res["results"]))
+        for label_data in res.get("results", []):
+            debug_label_data(label_data)
+        time.sleep(1)
+
+
 if __name__ == "__main__":
     from pyatlassian.tests import run_cov_test
 
