@@ -20,19 +20,23 @@ def test_get_pages_in_space():
     for page_data in res["results"]:
         debug_page_data(page_data)
 
+
+def test_pagi_get_pages_in_space():
+    # AI Empowerment Guide: Your Personal AI Assistant Onboarding Manual
+    page_id = 36700240
+
     # auto pagination
-    res = esc_conf.get_child_pages(
+    for res in esc_conf.pagi_get_child_pages(
         id=page_id,
         limit=1,
-        max_results=10,
-        paginate=True,
-    )
-    jprint(res)
-    print("Total Pages: ", len(res["results"]))
-    for page_data in res["results"]:
-        debug_page_data(page_data)
+        total_max_results=10,
+    ):
+        jprint(res)
+        print("Total Pages: ", len(res["results"]))
+        for page_data in res["results"]:
+            debug_page_data(page_data)
 
-    time.sleep(1)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
