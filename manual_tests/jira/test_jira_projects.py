@@ -9,7 +9,48 @@ from pyatlassian.tests.api_keys import esc_jira
 def test_get_projects_paginated():
     res = esc_jira.get_projects_paginated()
     jprint(res)
+    print("n_project = ", len(res["values"]))
     time.sleep(1)
+
+
+def test_pagi_get_projects_paginated_1():
+    for res in esc_jira.pagi_get_projects_paginated(
+        max_results=1,
+        total_max_results=3,
+    ):
+        jprint(res)
+        print("n_project = ", len(res["values"]))
+        time.sleep(1)
+
+
+def test_pagi_get_projects_paginated_2():
+    for res in esc_jira.pagi_get_projects_paginated(
+        max_results=3,
+        total_max_results=100,
+    ):
+        jprint(res)
+        print("n_project = ", len(res["values"]))
+        time.sleep(1)
+
+
+def test_pagi_get_projects_paginated_3():
+    for res in esc_jira.pagi_get_projects_paginated(
+        max_results=100,
+        total_max_results=3,
+    ):
+        jprint(res)
+        print("n_project = ", len(res["values"]))
+        time.sleep(1)
+
+
+def test_pagi_get_projects_paginated_4():
+    for res in esc_jira.pagi_get_projects_paginated(
+        max_results=100,
+        total_max_results=9999,
+    ):
+        jprint(res)
+        print("n_project = ", len(res["values"]))
+        time.sleep(1)
 
 
 def test_get_all_status_for_project():

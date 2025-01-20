@@ -6,6 +6,7 @@
 import typing as T
 import dataclasses
 
+from ..pagi import _paginate
 from ..atlassian.api import (
     NA,
     rm_na,
@@ -29,7 +30,6 @@ class IssueSearchMixin:
         self: "Jira",
         jql: str = NA,
         next_page_token: str = NA,
-        paginate: bool = False,
         max_results: int = NA,
         fields: list[T_ISSUE_FIELDS] = NA,
         expand: T_ISSUE_EXPAND = NA,
@@ -38,20 +38,13 @@ class IssueSearchMixin:
         fail_fast: bool = NA,
         reconcile_issues: list[int] = NA,
         req_kwargs: T.Optional[T_KWARGS] = None,
-        _issues: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get
 
-        :param paginate: If True, automatically handle pagination
-            the ``max_results`` is a JIRA API original parameter. Let's say you have
-            100 issues in total and you set ``max_results = 3``, the API will return 3 issues
-            when paginate is False. If you set paginate = True, then it will return all 100 issues.
         :param req_kwargs: additional ``requests.request()`` kwargs
         """
-        if _issues is None:
-            _issues = []
         params = {
             "jql": jql,
             "nextPageToken": next_page_token,
@@ -65,18 +58,49 @@ class IssueSearchMixin:
         }
         params = rm_na(**params)
         params = params if len(params) else None
-        res = self.make_request(
+        return self.make_request(
             method="GET",
             url=f"{self._root_url}/search/jql",
             params=params,
             req_kwargs=req_kwargs,
         )
-        _issues.extend(res.get("issues", []))
-        if ("nextPageToken" in res) and paginate:
-            _res = self.search_for_issues_using_jql_enhanced_search(
+
+    def pagi_search_for_issues_using_jql_enhanced_search(
+        self: "Jira",
+        jql: str = NA,
+        next_page_token: str = NA,
+        max_results: int = NA,
+        fields: list[T_ISSUE_FIELDS] = NA,
+        expand: T_ISSUE_EXPAND = NA,
+        properties: list[str] = NA,
+        fields_by_keys: bool = NA,
+        fail_fast: bool = NA,
+        reconcile_issues: list[int] = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
+        total_max_results: int = 9999,
+    ) -> T.Iterable[T_RESPONSE]:
+        """
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
+        :param total_max_results: total max results to fetch in all response
+        """
+
+        def get_next_token(res):
+            return res.get("nextPageToken")
+
+        def set_next_token(kwargs, next_token):
+            kwargs["next_page_token"] = next_token
+
+        yield from _paginate(
+            method=self.search_for_issues_using_jql_enhanced_search,
+            list_key="issues",
+            get_next_token=get_next_token,
+            set_next_token=set_next_token,
+            kwargs=dict(
                 jql=jql,
-                next_page_token=res["nextPageToken"],
-                paginate=paginate,
+                next_page_token=next_page_token,
                 max_results=max_results,
                 fields=fields,
                 expand=expand,
@@ -85,14 +109,6 @@ class IssueSearchMixin:
                 fail_fast=fail_fast,
                 reconcile_issues=reconcile_issues,
                 req_kwargs=req_kwargs,
-                _issues=_issues,
-            )
-        else:
-            _res = None
-
-        # Return results
-        if _res is None:
-            res["issues"] = _issues
-        else:
-            res = {"issues": _issues}
-        return res
+            ),
+            max_results=total_max_results,
+        )
