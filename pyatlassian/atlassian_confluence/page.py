@@ -6,6 +6,7 @@
 import typing as T
 import dataclasses
 
+from ..pagi import _paginate
 from ..atlassian.api import (
     NA,
     rm_na,
@@ -33,22 +34,19 @@ class PageMixin:
         sort: T_PAGE_SORT_ORDER = NA,
         cursor: str = NA,
         limit: int = NA,
-        paginate: bool = False,
-        max_results: int = 9999,
         req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
-        _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-labels-id-pages-get
 
-        :param paginate: If True, automatically handle pagination
-        :param max_results: Maximum number of total results to return
-            when ``paginate = True``
         :param req_kwargs: additional ``requests.request()`` kwargs
         """
-        base_url = f"{self._root_url}/labels/{id}/pages"
+        if _url is None:
+            url = f"{self._root_url}/labels/{id}/pages"
+        else:
+            url = _url
         params = {
             "space-id": space_id,
             "body-format": body_format,
@@ -56,14 +54,55 @@ class PageMixin:
             "cursor": cursor,
             "limit": limit,
         }
-        return self._paginate(
-            base_url=base_url,
+        params = rm_na(**params)
+        params = params if len(params) else None
+        return self.make_request(
+            method="GET",
+            url=url,
             params=params,
-            paginate=paginate,
-            max_results=max_results,
             req_kwargs=req_kwargs,
-            _url=_url,
-            _results=_results,
+        )
+
+    def pagi_get_pages_for_label(
+        self: "Confluence",
+        id: int,
+        space_id: list[int] = NA,
+        body_format: T_BODY_FORMAT = NA,
+        sort: T_PAGE_SORT_ORDER = NA,
+        cursor: str = NA,
+        limit: int = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
+        total_max_results: int = 9999,
+    ) -> T_RESPONSE:
+        """
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-labels-id-pages-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
+        :param total_max_results: total max results to fetch in all response
+        """
+
+        def get_next_token(res):
+            return res.get("_links", {}).get("next")
+
+        def set_next_token(kwargs, next_token):
+            kwargs["_url"] = f"{self.url}{next_token}"
+
+        yield from _paginate(
+            method=self.get_pages_for_label,
+            list_key="results",
+            get_next_token=get_next_token,
+            set_next_token=set_next_token,
+            kwargs=dict(
+                id=id,
+                space_id=space_id,
+                body_format=body_format,
+                sort=sort,
+                cursor=cursor,
+                limit=limit,
+                req_kwargs=req_kwargs,
+            ),
+            max_results=total_max_results,
         )
 
     def get_pages(
@@ -76,11 +115,8 @@ class PageMixin:
         body_format: T_BODY_FORMAT = NA,
         cursor: str = NA,
         limit: int = NA,
-        paginate: bool = False,
-        max_results: int = 9999,
         req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
-        _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
@@ -91,7 +127,10 @@ class PageMixin:
             when ``paginate = True``
         :param req_kwargs: additional ``requests.request()`` kwargs
         """
-        base_url = f"{self._root_url}/pages"
+        if _url is None:
+            url = f"{self._root_url}/pages"
+        else:
+            url = _url
         params = {
             "id": id,
             "space-id": space_id,
@@ -102,14 +141,59 @@ class PageMixin:
             "cursor": cursor,
             "limit": limit,
         }
-        return self._paginate(
-            base_url=base_url,
+        params = rm_na(**params)
+        params = params if len(params) else None
+        return self.make_request(
+            method="GET",
+            url=url,
             params=params,
-            paginate=paginate,
-            max_results=max_results,
             req_kwargs=req_kwargs,
-            _url=_url,
-            _results=_results,
+        )
+
+    def pagi_get_pages(
+        self: "Confluence",
+        id: list[int] = NA,
+        space_id: list[int] = NA,
+        sort: T_PAGE_SORT_ORDER = NA,
+        status: list[T_PAGE_STATUS] = NA,
+        title: str = NA,
+        body_format: T_BODY_FORMAT = NA,
+        cursor: str = NA,
+        limit: int = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
+        total_max_results: int = 9999,
+    ) -> T_RESPONSE:
+        """
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-pages-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
+        :param total_max_results: total max results to fetch in all response
+        """
+
+        def get_next_token(res):
+            return res.get("_links", {}).get("next")
+
+        def set_next_token(kwargs, next_token):
+            kwargs["_url"] = f"{self.url}{next_token}"
+
+        yield from _paginate(
+            method=self.get_pages,
+            list_key="results",
+            get_next_token=get_next_token,
+            set_next_token=set_next_token,
+            kwargs=dict(
+                id=id,
+                space_id=space_id,
+                sort=sort,
+                status=status,
+                title=title,
+                body_format=body_format,
+                cursor=cursor,
+                limit=limit,
+                req_kwargs=req_kwargs,
+            ),
+            max_results=total_max_results,
         )
 
     def get_page_by_id(
@@ -182,22 +266,19 @@ class PageMixin:
         body_format: T_BODY_FORMAT = NA,
         cursor: str = NA,
         limit: int = NA,
-        paginate: bool = False,
-        max_results: int = 9999,
         req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
-        _results: list[T_RESPONSE] = None,
     ) -> T_RESPONSE:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-spaces-id-pages-get
 
-        :param paginate: If True, automatically handle pagination
-        :param max_results: Maximum number of total results to return
-            when ``paginate = True``
         :param req_kwargs: additional ``requests.request()`` kwargs
         """
-        base_url = f"{self._root_url}/spaces/{id}/pages"
+        if _url is None:
+            url = f"{self._root_url}/spaces/{id}/pages"
+        else:
+            url = _url
         params = {
             "depth": depth,
             "sort": sort,
@@ -207,10 +288,64 @@ class PageMixin:
             "cursor": cursor,
             "limit": limit,
         }
-        return self._paginate(
-            base_url=base_url,
+        params = rm_na(**params)
+        params = params if len(params) else None
+        return self.make_request(
+            method="GET",
+            url=url,
             params=params,
-            paginate=paginate,
-            max_results=max_results,
             req_kwargs=req_kwargs,
+        )
+
+    def pagi_get_pages_in_space(
+        self: "Confluence",
+        id: int,
+        depth: str = NA,
+        sort: str = NA,
+        status: list[
+            T.Literal[
+                "current",
+                "archived",
+                "trashed",
+                "deleted",
+            ]
+        ] = NA,
+        title: str = NA,
+        body_format: T_BODY_FORMAT = NA,
+        cursor: str = NA,
+        limit: int = NA,
+        req_kwargs: T.Optional[T_KWARGS] = None,
+        total_max_results: int = 9999,
+    ) -> T_RESPONSE:
+        """
+        For detailed parameter descriptions, see:
+        https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api-spaces-id-pages-get
+
+        :param req_kwargs: additional ``requests.request()`` kwargs
+        :param total_max_results: total max results to fetch in all response
+        """
+
+        def get_next_token(res):
+            return res.get("_links", {}).get("next")
+
+        def set_next_token(kwargs, next_token):
+            kwargs["_url"] = f"{self.url}{next_token}"
+
+        yield from _paginate(
+            method=self.get_pages_in_space,
+            list_key="results",
+            get_next_token=get_next_token,
+            set_next_token=set_next_token,
+            kwargs=dict(
+                id=id,
+                depth=depth,
+                sort=sort,
+                status=status,
+                title=title,
+                body_format=body_format,
+                cursor=cursor,
+                limit=limit,
+                req_kwargs=req_kwargs,
+            ),
+            max_results=total_max_results,
         )

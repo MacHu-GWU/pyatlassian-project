@@ -18,17 +18,42 @@ def test_get_pages_for_label():
     time.sleep(1)
 
 
+def test_pagi_get_pages_for_label():
+    label_id = 41943045  # "ai-esc-playbook"
+    for res in esc_conf.pagi_get_pages_for_label(
+        id=label_id,
+        limit=3,
+    ):
+        jprint(res)
+        print("Total Pages: ", len(res["results"]))
+        for page_data in res["results"]:
+            debug_page_data(page_data)
+        time.sleep(1)
+
+
 def test_get_pages():
     res = esc_conf.get_pages(
         body_format="atlas_doc_format",
         limit=250,
-        paginate=True,
     )
     jprint(res)
     print("Total Pages: ", len(res["results"]))
     for page_data in res["results"]:
         debug_page_data(page_data)
     time.sleep(1)
+
+
+def test_pagi_get_pages():
+    for res in esc_conf.pagi_get_pages(
+        body_format="atlas_doc_format",
+        limit=5,
+        total_max_results=10,
+    ):
+        jprint(res)
+        print("Total Pages: ", len(res["results"]))
+        for page_data in res["results"]:
+            debug_page_data(page_data)
+        time.sleep(1)
 
 
 def test_get_page_by_id():
@@ -61,19 +86,20 @@ def test_get_pages_in_space():
     for page_data in res["results"]:
         debug_page_data(page_data)
 
-    # auto pagination
-    res = sh_conf.get_pages_in_space(
+
+def test_pagi_get_pages_in_space():
+    space_id = 45744130  # Job Work Template
+    for res in sh_conf.pagi_get_pages_in_space(
         id=space_id,
         limit=5,
-        max_results=10,
-        paginate=True,
-    )
-    jprint(res)
-    print("Total Pages: ", len(res["results"]))
-    for page_data in res["results"]:
-        debug_page_data(page_data)
+        total_max_results=10,
+    ):
+        jprint(res)
+        print("Total Pages: ", len(res["results"]))
+        for page_data in res["results"]:
+            debug_page_data(page_data)
 
-    time.sleep(1)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
