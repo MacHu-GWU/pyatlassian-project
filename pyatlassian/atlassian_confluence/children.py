@@ -66,7 +66,7 @@ class ChildrenMixin:
         sort: str = NA,
         req_kwargs: T.Optional[T_KWARGS] = None,
         total_max_results: int = 9999,
-    ) -> T_RESPONSE:
+    ) -> T.Iterable[T_RESPONSE]:
         """
         For detailed parameter descriptions, see:
         https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-children/#api-pages-id-children-get

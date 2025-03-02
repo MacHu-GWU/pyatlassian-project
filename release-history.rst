@@ -15,6 +15,31 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
+x.y.z (Backlog)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+**Minor Improvements**
+
+**Bugfixes**
+
+**Miscellaneous**
+
+
+0.3.1 (2025-03-02)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Features and Improvements**
+
+- Add a lot paginator version of "list" methods:
+    - ``Confluence.pagi_get_child_pages``
+    - ``Confluence.pagi_get_labels``
+    - ``Confluence.pagi_get_pages``
+    - ``Confluence.pagi_get_pages_for_label``
+    - ``Confluence.pagi_get_pages_in_space``
+    - ``Confluence.pagi_get_projects_paginated``
+    - ``Confluence.pagi_get_space``
+
+
 0.2.2 (2025-01-12)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Minor Improvements**
