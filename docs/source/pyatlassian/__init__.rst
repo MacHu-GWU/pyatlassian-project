@@ -14,4 +14,5 @@ sub packages and modules
     atlassian_confluence <atlassian_confluence/__init__>
     atlassian_jira <atlassian_jira/__init__>
     api <api>
+    pagi <pagi>
     

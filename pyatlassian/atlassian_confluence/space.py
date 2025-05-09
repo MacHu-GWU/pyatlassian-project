@@ -28,6 +28,18 @@ class SpaceMixin:
 
     def get_spaces(
         self: "Confluence",
+        ids: list[int] = NA,
+        keys: list[str] = NA,
+        type: str = NA,
+        status: str = NA,
+        labels: list[str] = NA,
+        favorited_by: str = NA,
+        not_favorited_by: str = NA,
+        sort: str = NA,
+        description_format: str = NA,
+        include_icon: bool = NA,
+        cursor: str = NA,
+        limit: int = NA,
         req_kwargs: T.Optional[T_KWARGS] = None,
         _url: str = None,
     ) -> T_RESPONSE:
@@ -41,14 +53,43 @@ class SpaceMixin:
             url = f"{self._root_url}/spaces"
         else:
             url = _url
+        params = {
+            "ids": ids,
+            "keys": keys,
+            "type": type,
+            "status": status,
+            "labels": labels,
+            "favorited-by": favorited_by,
+            "not-favorited_by": not_favorited_by,
+            "sort": sort,
+            "description-format": description_format,
+            "include-icon": include_icon,
+            "cursor": cursor,
+            "limit": limit,
+        }
+        params = rm_na(**params)
+        params = params if len(params) else None
         return self.make_request(
             method="GET",
             url=url,
+            params=params,
             req_kwargs=req_kwargs,
         )
 
     def pagi_get_spaces(
         self: "Confluence",
+        ids: list[int] = NA,
+        keys: list[str] = NA,
+        type: str = NA,
+        status: str = NA,
+        labels: list[str] = NA,
+        favorited_by: str = NA,
+        not_favorited_by: str = NA,
+        sort: str = NA,
+        description_format: str = NA,
+        include_icon: bool = NA,
+        cursor: str = NA,
+        limit: int = NA,
         req_kwargs: T.Optional[T_KWARGS] = None,
         total_max_results: int = 9999,
     ) -> T.Iterable[T_RESPONSE]:
@@ -72,6 +113,18 @@ class SpaceMixin:
             get_next_token=get_next_token,
             set_next_token=set_next_token,
             kwargs=dict(
+                ids=ids,
+                keys=keys,
+                type=type,
+                status=status,
+                labels=labels,
+                favorited_by=favorited_by,
+                not_favorited_by=not_favorited_by,
+                sort=sort,
+                description_format=description_format,
+                include_icon=include_icon,
+                cursor=cursor,
+                limit=limit,
                 req_kwargs=req_kwargs,
             ),
             max_results=total_max_results,

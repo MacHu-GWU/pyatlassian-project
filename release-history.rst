@@ -15,15 +15,12 @@ x.y.z (Backlog)
 **Miscellaneous**
 
 
-x.y.z (Backlog)
+0.3.2 (2025-05-09)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Features and Improvements**
 
-**Minor Improvements**
-
-**Bugfixes**
-
-**Miscellaneous**
+- ``Confluence.get_spaces`` now supports all parameter.
+- ``Confluence.pagi_get_spaces`` now supports all parameter.
 
 
 0.3.1 (2025-03-02)
